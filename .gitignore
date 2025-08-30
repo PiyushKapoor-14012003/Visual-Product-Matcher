@@ -1,2 +1,34 @@
-node_modules
+# Node modules
+node_modules/
+
+# Build output
+dist/
+
+# Vite cache
+.vite/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# IDE/editor settings
+.vscode/
+.idea/
+
+# Environment variables
 .env
+.env.local
+.env.*.local
+
+# Tailwind JIT cache
+.tailwind/
+
+# Optional: lock files if you want to ignore them
+# package-lock.json
+# yarn.lock
