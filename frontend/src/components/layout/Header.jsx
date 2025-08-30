@@ -1,16 +1,13 @@
-import { Link } from "react-router-dom";
-
 export default function Header() {
   return (
-    <header className="w-full flex justify-between items-center px-6 py-4 border-b bg-white shadow-sm">
-      <Link to="/" className="text-xl font-bold text-purple-700">
-        Visual Product Matcher
-      </Link>
-      <nav className="flex gap-6 text-gray-700">
-        <Link to="/" className="hover:text-purple-600">Home</Link>
-        <Link to="/results" className="hover:text-purple-600">Results</Link>
-        <a href="#" className="hover:text-purple-600">Docs</a>
-      </nav>
-    </header>
+    <section className="text-center mt-10 px-6">
+      <h2 className="text-3xl md:text-5xl font-extrabold text-gray-900">
+        Find Similar Products Fast
+      </h2>
+      <p className="text-gray-700 mt-3 text-base md:text-xl max-w-2xl mx-auto">
+        Upload a photo, discover visually similar products.
+      </p>
+    </section>
   );
 }
+

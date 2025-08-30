@@ -1,12 +1,9 @@
 export default function Footer() {
   return (
-    <footer className="w-full py-4 border-t border-gray-200 text-center text-sm text-gray-600">
-      <nav className="flex justify-center gap-6">
-        <a href="#" className="hover:text-purple-600">About</a>
-        <a href="#" className="hover:text-purple-600">Privacy</a>
-        <a href="#" className="hover:text-purple-600">Contact</a>
-      </nav>
-      <p className="mt-2">© {new Date().getFullYear()} VisualMatch</p>
+    <footer className="mt-auto py-6 md:py-8 border-t text-center text-gray-700 flex justify-center gap-6 md:gap-12 bg-white/60 backdrop-blur">
+      <a href="#">About</a>
+      <a href="#">Docs</a>
+      <a href="#">Contact</a>
     </footer>
   );
 }
