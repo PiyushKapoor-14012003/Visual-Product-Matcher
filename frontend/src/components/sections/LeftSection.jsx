@@ -1,18 +1,33 @@
-
+import { useState } from "react";
 import { UploadCloud as Upload, Link as LinkIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 export default function LeftSection() {
+  const [mode, setMode] = useState("upload"); 
   const navigate = useNavigate();
 
   return (
     <div className="flex-1 text-center md:text-left">
 
       <div className="flex flex-col sm:flex-row justify-center md:justify-start gap-4 md:gap-8 mt-8">
-        <button className="w-full sm:w-auto flex items-center justify-center gap-3 px-6 md:px-10 py-4 bg-purple-600 text-white text-base md:text-lg rounded-xl shadow hover:bg-purple-700 transition">
+        <button
+          onClick={() => setMode("upload")}
+          className={`w-full sm:w-auto flex items-center justify-center gap-3 px-6 md:px-10 py-4 rounded-xl shadow transition ${
+            mode === "upload"
+              ? "bg-purple-600 text-white"
+              : "bg-white border text-gray-700 hover:bg-gray-100"
+          }`}
+        >
           <Upload size={22} /> Upload Image
         </button>
-        <button className="w-full sm:w-auto flex items-center justify-center gap-3 px-6 md:px-10 py-4 bg-white border text-base md:text-lg rounded-xl shadow hover:bg-gray-100 transition">
+        <button
+          onClick={() => setMode("url")}
+          className={`w-full sm:w-auto flex items-center justify-center gap-3 px-6 md:px-10 py-4 rounded-xl shadow transition ${
+            mode === "url"
+              ? "bg-purple-600 text-white"
+              : "bg-white border text-gray-700 hover:bg-gray-100"
+          }`}
+        >
           <LinkIcon size={22} /> Paste URL
         </button>
       </div>
@@ -23,12 +38,22 @@ export default function LeftSection() {
         <span className="h-px w-16 md:w-28 bg-gray-300"></span>
       </div>
 
-      <div className="border-2 border-dashed border-purple-400 rounded-2xl p-8 md:p-16 mt-8 md:mt-10 w-full max-w-md md:max-w-xl bg-white/60 mx-auto md:mx-0">
-        <div className="flex flex-col items-center gap-3 md:gap-4 text-gray-700">
-          <Upload className="text-purple-600" size={36} />
-          <p className="font-medium text-base md:text-xl">Drag & Drop</p>
+      {mode === "upload" ? (
+        <div className="border-2 border-dashed border-purple-400 rounded-2xl p-8 md:p-16 mt-8 w-full max-w-md md:max-w-xl bg-white/60 mx-auto md:mx-0">
+          <div className="flex flex-col items-center gap-3 md:gap-4 text-gray-700">
+            <Upload className="text-purple-600" size={36} />
+            <p className="font-medium text-base md:text-xl">Drag & Drop</p>
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="mt-8 w-full max-w-md md:max-w-xl mx-auto md:mx-0">
+          <input
+            type="text"
+            placeholder="Paste image URL here..."
+            className="w-full px-4 py-3 border rounded-xl shadow bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
+          />
+        </div>
+      )}
 
       <button
         onClick={() => navigate("/results")}
