@@ -1,8 +1,9 @@
-const express = require("express");
+import express from "express";
+import { handleUpload } from "../controllers/uploadController.js";
+import upload from "../middleware/Uploadmiddleware.js";
+
 const router = express.Router();
-const { handleUpload } = require("../controllers/uploadController");
-const upload = require("../middlewares/uploadMiddleware");
 
 router.post("/", upload.single("file"), handleUpload);
 
-module.exports = router;
+export default router;

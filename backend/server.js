@@ -1,17 +1,20 @@
-const express=require('express');
-const cors=require('cors');
-const mongoose=require('mongoose');
-require('dotenv').config();
+import express from 'express';
+import cors from 'cors';
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 
-const uploadRoutes=require('./routes/uploadRoutes');
-const searchRoutes = require('./routes/searchRoutes');
+import uploadRoutes from './routes/uploadRoutes.js';
+import searchRoutes from './routes/searchRoutes.js';
+import productRoutes from './routes/productRoutes.js';
+dotenv.config();
 
 const app=express();
 app.use(cors());
 app.use(express.json());
 
-app.use('/upload', uploadRoutes);
-app.use('/search', searchRoutes);
+app.use('/api/upload', uploadRoutes);
+app.use('/api/search', searchRoutes);
+app.use('/api/products', productRoutes);
 
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
 .then(() => console.log('MongoDB connected'))
