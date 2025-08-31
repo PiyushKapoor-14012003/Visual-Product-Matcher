@@ -26,15 +26,18 @@ export default function LeftSection() {
     }
   };
 
-  const handleGetStarted = () => {
-    if (mode === "upload" && file) {
-      navigate("/results", { state: { uploadedImage: filePreview, file } });
-    } else if (mode === "url" && url.trim()) {
-      navigate("/results", { state: { uploadedImage: url } });
-    } else {
-      alert("Please upload an image or enter a valid URL");
-    }
-  };
+const handleGetStarted = () => {
+  if (mode === "upload" && filePreview) {
+    console.log("Navigating with preview:", filePreview);
+    navigate("/results", { state: { uploadedImage: filePreview } });
+  } else if (mode === "url" && url.trim()) {
+    navigate("/results", { state: { uploadedImage: url } });
+  } else {
+    alert("Please upload an image or enter a valid URL");
+  }
+};
+
+
 
   return (
     <div className="flex-1 text-center md:text-left">
@@ -111,7 +114,7 @@ export default function LeftSection() {
       )}
 
       <button
-        onClick={() => navigate("/results")}
+        onClick={handleGetStarted}
         className="mt-8 md:mt-12 w-full sm:w-auto px-8 md:px-12 py-4 md:py-5 bg-purple-800 text-white text-base md:text-xl font-semibold rounded-xl shadow hover:bg-purple-900 transition"
       >
         Get Started →

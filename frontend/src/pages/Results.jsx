@@ -12,23 +12,24 @@ export default function Results() {
 
   const [items, setItems] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-
-  // ✅ Call backend search API when searchQuery changes
   useEffect(() => {
     const fetchResults = async () => {
-      if (!searchQuery.trim()) {
-        setItems([]); // clear if no query
-        return;
-      }
-
       try {
-        const res = await fetch(
-          `http://localhost:5000/api/search?query=${encodeURIComponent(searchQuery)}`
-        );
-        const data = await res.json();
-        setItems(data);
+        if (searchQuery.trim()) {
+          // ✅ Text search
+          const res = await fetch(
+            `http://localhost:5000/api/search?query=${encodeURIComponent(searchQuery)}`
+          );
+          const data = await res.json();
+          setItems(data);
+        } else {
+          // ✅ Default: show 20 products when user comes from landing page
+          const res = await fetch("http://localhost:5000/api/products?limit=20");
+          const data = await res.json();
+          setItems(data);
+        }
       } catch (err) {
-        console.error("Search failed:", err);
+        console.error("Failed to load products:", err);
       }
     };
 
