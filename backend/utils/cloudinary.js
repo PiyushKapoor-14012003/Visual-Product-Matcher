@@ -1,4 +1,7 @@
-const cloudinary = require('cloudinary').v2;
+import { v2 as cloudinary } from "cloudinary";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -6,10 +9,9 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const uploadToCloudinary = async (base64Image) => {
-  return await cloudinary.uploader.upload(base64Image, {
-    folder: 'product-matcher',
+// Accepts file path OR base64 string
+export const uploadToCloudinary = async (fileOrBase64) => {
+  return await cloudinary.uploader.upload(fileOrBase64, {
+    folder: "product-matcher",
   });
 };
-
-module.exports = { uploadToCloudinary };

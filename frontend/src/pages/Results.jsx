@@ -1,48 +1,39 @@
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import Navbar from "../components/common/Navbar";
 import Footer from "../components/layout/Footer";
 import UploadedImageCard from "../components/common/UploadedImageCard";
-import Filters from "../components/common/Filters";
 import ResultsGrid from "../components/common/ResultsGrid";
+import Search from "../components/common/search";
 
 export default function Results() {
-  const [similarity, setSimilarity] = useState(0);
+  const { state } = useLocation();
+  const uploadedImage = state?.uploadedImage;
+
   const [items, setItems] = useState([]);
-  const [page, setPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const generateProducts = (count, page) => {
-    const sampleProducts = [
-      { title: "Tote Bag", category: "Accessories", image: "https://via.placeholder.com/150/FFCBA4", similarity: 92 },
-      { title: "Crossbody Bag", category: "Accessories", image: "https://via.placeholder.com/150/B5651D", similarity: 82 },
-      { title: "Leather Belt", category: "Accessories", image: "https://via.placeholder.com/150/8B4513", similarity: 89 },
-      { title: "Running Shoes", category: "Shoes", image: "https://via.placeholder.com/150/EEE", similarity: 87 },
-      { title: "Shoes", category: "Shoes", image: "https://via.placeholder.com/150/FFF", similarity: 83 },
-    ];
-    return Array.from({ length: count }, (_, i) => ({
-      ...sampleProducts[i % sampleProducts.length],
-      id: page * 100 + i,
-    }));
-  };
-
+  // ✅ Call backend search API when searchQuery changes
   useEffect(() => {
-    setItems(generateProducts(6, page));
-  }, []);
+    const fetchResults = async () => {
+      if (!searchQuery.trim()) {
+        setItems([]); // clear if no query
+        return;
+      }
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.innerHeight + document.documentElement.scrollTop + 50 >= document.documentElement.scrollHeight) {
-        setPage((prev) => prev + 1);
+      try {
+        const res = await fetch(
+          `http://localhost:5000/api/search?query=${encodeURIComponent(searchQuery)}`
+        );
+        const data = await res.json();
+        setItems(data);
+      } catch (err) {
+        console.error("Search failed:", err);
       }
     };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
-  useEffect(() => {
-    if (page > 1) {
-      setItems((prev) => [...prev, ...generateProducts(6, page)]);
-    }
-  }, [page]);
+    fetchResults();
+  }, [searchQuery]);
 
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-purple-200 via-pink-200 to-orange-200">
@@ -52,13 +43,16 @@ export default function Results() {
           Search Results
         </h1>
 
+        <div className="mb-8">
+          <Search onSearch={setSearchQuery} />
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="md:col-span-1 space-y-8">
-            <UploadedImageCard />
+            <UploadedImageCard image={uploadedImage} />
           </div>
           <div className="md:col-span-3 space-y-8">
-            <Filters similarity={similarity} setSimilarity={setSimilarity} />
-            <ResultsGrid items={items} similarity={similarity} />
+            <ResultsGrid items={items} />
           </div>
         </div>
       </main>

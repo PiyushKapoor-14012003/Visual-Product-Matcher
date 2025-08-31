@@ -5,12 +5,15 @@ import { useNavigate } from "react-router-dom";
 export default function LeftSection() {
   const [mode, setMode] = useState("upload");
   const [file, setFile] = useState(null);
+  const [filePreview, setFilePreview] = useState(null);
+  const [url, setUrl] = useState("");
   const navigate = useNavigate();
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     if (selectedFile) {
-      setFile(URL.createObjectURL(selectedFile));
+      setFile(selectedFile);
+      setFilePreview(URL.createObjectURL(selectedFile));
     }
   };
 
@@ -18,7 +21,18 @@ export default function LeftSection() {
     e.preventDefault();
     const droppedFile = e.dataTransfer.files[0];
     if (droppedFile) {
-      setFile(URL.createObjectURL(droppedFile));
+      setFile(droppedFile);
+      setFilePreview(URL.createObjectURL(droppedFile));
+    }
+  };
+
+  const handleGetStarted = () => {
+    if (mode === "upload" && file) {
+      navigate("/results", { state: { uploadedImage: filePreview, file } });
+    } else if (mode === "url" && url.trim()) {
+      navigate("/results", { state: { uploadedImage: url } });
+    } else {
+      alert("Please upload an image or enter a valid URL");
     }
   };
 
@@ -59,9 +73,9 @@ export default function LeftSection() {
           onDrop={handleDrop}
           onDragOver={(e) => e.preventDefault()}
         >
-          {file ? (
+          {filePreview ? (
             <img
-              src={file}
+              src={filePreview}
               alt="Preview"
               className="max-h-48 mx-auto rounded-lg shadow"
             />
@@ -89,6 +103,8 @@ export default function LeftSection() {
           <input
             type="text"
             placeholder="Paste image URL here..."
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
             className="w-full px-4 py-3 border rounded-xl shadow bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
           />
         </div>
